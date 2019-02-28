@@ -1,0 +1,6 @@
+{
+  "name": "EditUser",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./EditUser.js"
+}

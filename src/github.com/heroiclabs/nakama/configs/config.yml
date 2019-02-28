@@ -1,0 +1,15 @@
+metrics:
+  reporting_freq_sec: 10
+  namespace: "metrics"
+  stackdriver_projectid: ""
+  prometheus_port: 9090
+runtime:
+  http_key: ""
+socket:
+  server_key: ""
+database:
+  address:
+  - "root@127.0.0.1:26257"
+  conn_max_lifetime_ms: 0
+  max_open_conns: 0
+  max_idle_conns: 100

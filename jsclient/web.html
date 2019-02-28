@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<script src="node_modules/@heroiclabs/nakama-js/dist/nakama-js.umd.js"></script>
+<script>
+    let client = new nakamajs.Client("defaultkey", "18.216.75.29", 7350);
+    client.ssl = false;
+
+    function getRandomToken() {
+        // E.g. 8 * 32 = 256 bits token
+        var randomPool = new Uint8Array(32);
+        crypto.getRandomValues(randomPool);
+        var hex = '';
+        for (var i = 0; i < randomPool.length; ++i) {
+            hex += randomPool[i].toString(16);
+        }
+        // E.g. db18458e2782b2b77e36769c569e263a53885a9944dd0a861e5064eac16f1a
+        return hex;
+    }
+
+    let globalToken;
+    let globalUserID;
+    const session = client.authenticateEmail({
+        email: "ziuziuziu@gmail.com",
+        password: "testtest",
+        create: false
+    }).then((session) => {
+        globalToken = session.token;
+        globalUserID = session.user_id;
+        console.log(session);
+
+        let socket = client.createSocket(false, true);
+        socket.connect(session);
+        socket.ondisconnect = (event) => {
+            console.info("Disconnected from the server. Event:", event);
+        };
+        socket.onnotification = (notification) => {
+            console.info("Received notification:", notification);
+        };
+        socket.onchannelpresence = (presence) => {
+            console.info("Received presence update:", presence);
+        };
+        socket.onchannelmessage = (message) => {
+            console.info("Received new chat message:", message);
+        };
+        socket.onmatchdata = (matchdata) => {
+            console.info("Received match data: %o", matchdata);
+        };
+        socket.onmatchpresence = (matchpresence) => {
+            console.info("Received match presence update:", matchpresence);
+        };
+        socket.onmatchmakermatched = (matchmakerMatched) => {
+            console.info("Received matchmaker update:", matchmakerMatched);
+        };
+        socket.onstatuspresence = (statusPresence) => {
+            console.info("Received status presence update:", statusPresence);
+        };
+        socket.onstreampresence = (streamPresence) => {
+            console.info("Received stream presence update:", streamPresence);
+        };
+        socket.onstreamdata = (streamdata) => {
+            console.info("Received stream data:", streamdata);
+        };
+        socket.onchannelmessage = (channelMessage) => {
+            console.info("Received chat message:", channelMessage);
+        };
+    });
+
+</script>
+</body>
+</html>
